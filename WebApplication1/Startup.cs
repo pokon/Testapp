@@ -6,8 +6,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using MvcMovie.Models;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
-namespace WebApplication1
+namespace MvcMovie
 {
     public class Startup
     {
@@ -22,6 +26,10 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddDbContext<MvcMovieContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("MvcMovieContext")));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +45,15 @@ namespace WebApplication1
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            var defaultCulture = new CultureInfo("es-UY");
+            var localizationOptions = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(defaultCulture),
+                SupportedCultures = new List<CultureInfo> { defaultCulture },
+                SupportedUICultures = new List<CultureInfo> { defaultCulture }
+            };
+            app.UseRequestLocalization(localizationOptions);
+
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
@@ -48,3 +65,4 @@ namespace WebApplication1
         }
     }
 }
+
