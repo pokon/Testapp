@@ -18,7 +18,7 @@ namespace MvcMovie.Models
 
         [Display(Name = "Genre")]
         [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
-        [Required]
+        [Required(ErrorMessage = "{0} måste fyllas i")]
         [StringLength(30)]
         public string Genre { get; set; }
 
@@ -30,7 +30,7 @@ namespace MvcMovie.Models
         [Display(Name = "Ålderskategori")]
         [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
         [StringLength(5)]
-        [Required]
+        [Required(ErrorMessage = "{0} måste fyllas i")]
         public string Rating { get; set; }
     }
 }
